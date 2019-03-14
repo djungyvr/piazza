@@ -1,0 +1,13 @@
+.topHeader {
+	background-color: rgb(62, 122, 171);
+	height: 33px;
+}
+
+.bottomHeader {
+	background-color: #e3e3e3;
+	height: 23px;
+}
+
+h3 {
+	color: rgb(255,255,255);
+}

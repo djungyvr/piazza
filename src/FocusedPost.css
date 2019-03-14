@@ -1,0 +1,35 @@
+.sticky {
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+}
+
+.textAreaContainer {
+	background-color: white;
+	padding-bottom: 5px;
+}
+
+.followUpContainer {
+	background-color: white;
+	padding-bottom: 5px;
+}
+
+.textArea {
+	width: 100%;
+	font-size: 13px;
+	line-height: 12px;
+}
+
+.subHeader {
+	border-bottom-style: solid;
+	border-bottom-color: rgb(210, 216, 223);
+	border-bottom-width: 0.55px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.subContainer {
+	margin:10px;
+	border-radius: 5px;
+	box-shadow: rgb(103, 104, 105) 0px 0px 3px 0px;
+}

@@ -1,0 +1,29 @@
+.previewPost {
+	cursor: pointer;
+	border-width: 1px;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+
+	border-left-width: 0.55px;
+	border-right-width: 0.55px;
+	border-bottom-width: 0.55px;
+
+	border-left-color: rgb(210, 216, 223);
+	border-right-color: rgb(210, 216, 223);
+	border-bottom-color: rgb(210, 216, 223);
+
+	font-size:14px;
+
+	padding:10px;
+}
+
+.previewHeader {
+	font-size: 14px;
+	display: inline-block;
+}
+
+.previewBody {
+	font-size:11px;
+	display: inline-block;
+}

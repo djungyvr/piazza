@@ -1,28 +1,75 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Post from './Post';
+import FocusedPost from './FocusedPost';
+import Header from './Header';
+import Search from './Search';
+
 import './App.css';
 
+import allPosts from './Posts';
+
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			focusedPost: allPosts[0],
+			posts: allPosts,
+		}
+		this.handleToggle = this.handleToggle.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
+		this.handleResetSearch = this.handleResetSearch.bind(this);
+	}
+	handleToggle(idx) {
+		this.setState({focusedPost: this.state.posts[idx]});
+	}
+	handleResetSearch() {
+		this.setState({posts: allPosts});
+	}
+	handleSearch(query) {
+		if (query.length === 0) {
+			return;
+		}
+		if (query[0] === '@') {
+			var postID = query.substring(1, query.length);
+			var newFocusedPost = allPosts.filter((p) => p.postID === postID)[0];
+			if (newFocusedPost) {
+				this.setState({focusedPost: newFocusedPost});
+			}
+		} else {
+			this.setState({posts: allPosts.filter((p) => p.body.includes(query) || p.title.includes(query))});
+		}
+	}
+	render() {
+		var renderPosts = this.state.posts.map(function(post, idx) {
+			return <Post
+				key={post.postID}
+				idx={idx}
+				post={post}
+				active={post.postID === this.state.focusedPost.postID}
+				onToggle={this.handleToggle}/>
+		}, this);
+		return (
+			<div>
+			<Header/>
+			<Row noGutters={true}>
+				<Col xs={3}>
+					<Search handleSearch={this.handleSearch} handleResetSearch={this.handleResetSearch}/>
+					<div style={{overflowY: "scroll", height: "100vh"}}>
+					{renderPosts}
+					</div>
+				</Col>
+				<Col>
+					<FocusedPost
+						posts={allPosts}
+						focusedPost={this.state.focusedPost}
+					/>
+				</Col>
+			</Row>
+			</div>
+		);
+	}
 }
 
 export default App;
