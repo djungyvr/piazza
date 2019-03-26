@@ -33,3 +33,8 @@
 	border-radius: 5px;
 	box-shadow: rgb(103, 104, 105) 0px 0px 3px 0px;
 }
+
+.rta__autocomplete {
+	max-height: 253px;
+	overflow: auto;
+}

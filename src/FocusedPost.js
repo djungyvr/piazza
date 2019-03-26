@@ -1,5 +1,7 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 
 import "@webscopeio/react-textarea-autocomplete/style.css";
@@ -9,13 +11,29 @@ import "./FocusedPost.css";
 import $ from 'jquery';
 
 class FocusedPost extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handlePost = this.handlePost.bind(this);
+	}
 	match(token) {
 		return this.props.posts.filter(p => p.postID.startsWith(token));
+	}
+	handlePost() {
+		var followup = this.rtaRef.state.value;
+		this.rtaRef.setState({value: ''});
+		this.props.handlePost(followup);
 	}
 	onCaretPositionChange = (position) => {
 			console.log(`Caret position is equal to ${position}`);
 	}
-	componentDidMount() { $("#textArea").focus(function(){
+	componentDidUpdate() {
+		var prefill = this.props.focusedPost.prefillText;
+		this.rtaRef.setState({value: prefill ? prefill : ''});
+	}
+	componentDidMount() {
+		var prefill = this.props.focusedPost.prefillText;
+		this.rtaRef.setState({value: prefill ? prefill : ''});
+		$("#textArea").focus(function(){
 			$("#textArea").height("100px");
 		});
 		$("#textArea").blur(function(){
@@ -45,30 +63,28 @@ class FocusedPost extends React.Component {
 		});
 	}
 	render() {
-		var followups = this.props.focusedPost.followups.map((f)=><div style={{backgroundColor: "#f6f7f6", fontSize: "13px", marginBottom: "10px"}}>{f.body}</div>)
+		var followups = this.props.focusedPost.followups.map((f, idx)=><div key={idx} style={{backgroundColor: "#f6f7f6", fontSize: "13px", marginBottom: "10px"}}>{f.body}</div>)
 		const Item = ({ entity: { postID, title } }) => <div>{`${postID}: ${title}`}</div>;
 		const rta = (
 			<div>
 			<ReactTextareaAutocomplete
 				id="textArea"
 				className="textArea"
+				ref={ref => { this.rtaRef = ref; }}
 				loadingComponent={() => <span>Loading</span>}
 				trigger={{
 					"@": {
 						dataProvider: token => {
 							return this.match(token)
-								.slice(0, 10)
 								.map(({ postID, title }) => ({ postID, title }));
 						},
 						component: Item,
 						output: (item, trigger) => "@" + item.postID,
 					}
 				}}
-				onCaretPositionChange={this.onCaretPositionChange}
 				boundariesElement="div"
 			/>
-			</div>
-		)
+			</div>)
 		return (
 			<Container>
 				<Container className="subContainer">
@@ -82,6 +98,7 @@ class FocusedPost extends React.Component {
 						<div id="textAreaDiv" className="textAreaContainer">
 							<div className="subHeader">start a new followup discussion</div>
 							{rta}
+							<a style={{color:"blue", cursor:"pointer"}} onClick={this.handlePost}>post</a>
 						</div>
 				</Container>
 			</Container>

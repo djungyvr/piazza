@@ -20,12 +20,19 @@ class App extends Component {
 		this.handleToggle = this.handleToggle.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleResetSearch = this.handleResetSearch.bind(this);
+		this.handlePost = this.handlePost.bind(this);
 	}
 	handleToggle(idx) {
 		this.setState({focusedPost: this.state.posts[idx]});
 	}
 	handleResetSearch() {
 		this.setState({posts: allPosts});
+	}
+	handlePost(followup) {
+		var fp = this.state.focusedPost;
+		fp.followups.push({body: followup});
+		console.log(fp);
+		this.setState({focusedPost: fp});
 	}
 	handleSearch(query) {
 		if (query.length === 0) {
@@ -64,6 +71,7 @@ class App extends Component {
 					<FocusedPost
 						posts={allPosts}
 						focusedPost={this.state.focusedPost}
+						handlePost={this.handlePost}
 					/>
 				</Col>
 			</Row>
