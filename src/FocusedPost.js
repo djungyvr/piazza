@@ -47,15 +47,21 @@ class FocusedPost extends React.Component {
 			}, 250);
 		});
 		$(document).ready(function () {
-			var textArea = $("#textArea");
-			var textAreaDiv = $("#textAreaDiv");
 			var originalLocation = null;
-			$(window).scroll(function (event) {
-				if(textArea.is(":focus") && window.scrollY + $(window).height() < textArea.offset().top) {
-					originalLocation = textArea.offset().top;
+			$('#focusedPost').scroll(function (event) {
+				var textArea = $("#textArea");
+				var textAreaDiv = $("#textAreaDiv");
+				var fpScrollTop = $('#focusedPost').scrollTop();
+				var fpHeight = $('#focusedPost').height();
+				var fpTopAndHeight = fpScrollTop + fpHeight - 20;
+				var offsetTop = textArea.offset().top;
+				//console.log(fpTopAndHeight + ' ' + textArea.offset().top);
+				if(!textAreaDiv.hasClass("sticky") && textArea.is(":focus") && fpTopAndHeight < offsetTop) {
+					originalLocation = offsetTop - 20;
 					textAreaDiv.addClass("sticky");
 				}
-				if(textArea.is(":focus") && window.scrollY + $(window).height() > originalLocation - 50) {
+				console.log(fpTopAndHeight + ' ' + originalLocation);
+				if(textAreaDiv.hasClass("sticky") && fpTopAndHeight > originalLocation) {
 					originalLocation = null;
 					textAreaDiv.removeClass("sticky");
 				}
@@ -86,11 +92,11 @@ class FocusedPost extends React.Component {
 			/>
 			</div>)
 		return (
-			<Container>
+			<Container id="focusedPost"  style={{overflowY: "scroll", height: "88vh"}}>
 				<Container className="subContainer">
 					<div className="subHeader">note</div>
 					<h4 style={{fontSize:"20px"}}>@{this.props.focusedPost.postID}: {this.props.focusedPost.title}</h4>
-					<p style={{fontSize:"13px"}}>{this.props.focusedPost.body}</p>
+					<p style={{fontSize:"13px", whiteSpace: "pre-wrap"}}>{this.props.focusedPost.body}</p>
 				</Container>
 				<Container className="subContainer">
 					<div className="subHeader">followup discussions</div>

@@ -63,7 +63,7 @@ class App extends Component {
 			<Row noGutters={true}>
 				<Col xs={3}>
 					<Search handleSearch={this.handleSearch} handleResetSearch={this.handleResetSearch}/>
-					<div style={{overflowY: "scroll", height: "100vh"}}>
+					<div style={{overflowY: "scroll", height: "84vh"}}>
 					{renderPosts}
 					</div>
 				</Col>
